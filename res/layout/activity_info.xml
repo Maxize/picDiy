@@ -1,0 +1,139 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:scaleType="fitXY" >
+
+    <ImageView
+        android:id="@+id/topBar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/top_bar" />
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="80dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="5dp"
+        android:background="#00000000"
+        android:src="@xml/btn_back" />
+
+    
+    <RelativeLayout
+        android:id="@+id/wechat_bg"
+        android:layout_width="340dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/base03">
+	        <ImageButton 
+	            android:id="@+id/btn_wechat"
+	            android:layout_width="110dp"
+	            android:layout_height="80dp"
+	            android:layout_marginLeft="10dp"
+	            android:layout_centerVertical="true"
+	            android:background="#00000000"
+            android:src="@xml/btn_wechat"/>
+	        <ImageView 
+	            android:id="@+id/tx_follow"
+	            android:layout_width="320dp"
+	            android:layout_height="70dp"
+	            android:layout_marginLeft="110dp"
+	            android:layout_marginTop="5dp"
+	            android:background="@drawable/text02"
+	            />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/rl_center"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+		android:layout_centerVertical="true"        
+        android:background="#00000000">
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/creater_bg"
+        android:layout_width="340dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/rl_center"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/base03">
+	        <ImageButton 
+	            android:id="@+id/btn_creater"
+	            android:layout_width="110dp"
+	            android:layout_height="80dp"
+	            android:layout_marginLeft="10dp"
+	            android:layout_centerVertical="true"
+	            android:background="#00000000"
+            android:src="@xml/btn_creater"/>
+	        <ImageView 
+	            android:id="@+id/tx_creater"
+	            android:layout_width="160dp"
+	            android:layout_height="50dp"
+	            android:layout_marginLeft="150dp"
+	            android:layout_centerVertical="true"
+	            android:background="@drawable/text04"
+	            />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/app_info"
+        android:layout_width="fill_parent"
+        android:layout_height="140dp"
+        android:layout_alignParentBottom="true">
+        
+        <TextView 
+            android:id="@+id/tx_version"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:text="@string/tx_version"
+            />
+        <TextView 
+            android:id="@+id/tx_announce"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/tx_version"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:text="@string/tx_announce"
+            />
+        <TextView 
+            android:id="@+id/tx_company"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_below="@id/tx_announce"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:text="@string/tx_company"
+            />
+        <TextView 
+            android:id="@+id/tx_copy_right"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_below="@id/tx_company"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:text="@string/tx_copy_right"
+            />"
+    </RelativeLayout>
+    
+    
+
+</RelativeLayout>

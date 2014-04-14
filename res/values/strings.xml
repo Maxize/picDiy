@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PicDiy</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="tx_rank">您已击败了5%的玩家</string>
+    <string name="i_level">0</string>
+    <string name="i_coin">0</string>
+    <string name="tx_version">版本号：1.0</string>
+    <string name="tx_announce">版权声明</string>
+    <string name="tx_company">深圳XXXX科技有限公司 版权所有</string>
+    <string name="tx_copy_right">Copyright Enjoy Games \n All Right Reserved</string>
+    <integer-array name="title">
+        <item>1</item>
+        <item>1</item>
+    </integer-array>
+
+</resources>
