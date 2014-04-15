@@ -3,6 +3,8 @@ package com.amnon.picdiy.entity;
 import java.io.InputStream;
 
 import com.amnon.picdiy.R;
+import com.amnon.picdiy.common.DiyApplication;
+import com.amnon.picdiy.common.GameConfig;
 import com.amnon.picdiy.data.DataDefine;
 
 import android.content.Context;
@@ -20,6 +22,7 @@ import android.view.SurfaceView;
 
 public class MapView extends SurfaceView implements Callback, Runnable{
     public static Context m_context;
+    public DiyApplication m_application;
     
     public boolean isExit = false;
     
@@ -40,32 +43,56 @@ public class MapView extends SurfaceView implements Callback, Runnable{
     
     private int m_screenW, m_screenH;
     
-    private int[][] m_linker_a = {
-                              {8, 780},
-                              {33, 780},
-                              {58, 780},
-    };
+    private int[][] m_linker_a = new int[100][3];
     
-//    private int[][] m_buttonPos_a = { 
-//                                  {8, 780},
-//                                  {73, 780},
-//                                  {138, 780},
-//                                  {193, 780},
-//                                  {258, 780},
-//                                  {313, 780},
-//    };
+    private int[][] m_buttonPos_a = new int[100][5];;
     
 
     public MapView(Context context, AttributeSet attrs) {
         super(context);
-        this.m_context = context;
+        MapView.m_context = context;
+        this.m_application = (DiyApplication)MapView.m_context.getApplicationContext();
         m_sfh = this.getHolder();
         m_sfh.addCallback(this);
         
         m_paint = new Paint();
-        
+        initData();
         this.setKeepScreenOn(true);
         
+    }
+
+    private void initData() {
+        // TODO Auto-generated method stub
+        System.out.println(" DataDefine.m_linker_a -------------> ");
+        for (int i = 0; i < DataDefine.m_linker_a.length; i++) {
+            System.out.println(" DataDefine.m_linker_a -------> " + i);
+            for (int j = 0; j < DataDefine.m_linker_a[i].length; j++) {
+                if (j == 0){
+                    m_linker_a[i][j] = (int) Math.floor(DataDefine.m_linker_a[i][j] * GameConfig.getWeightsX() + 0.5f);
+                }else if(j == 1){
+                    m_linker_a[i][j] = (int) Math.floor(DataDefine.m_linker_a[i][j] * GameConfig.getWeightsY() + 0.5f);
+                }else{
+                    m_linker_a[i][j] = DataDefine.m_linker_a[i][j];
+                }
+                System.out.println(" -------------> "+m_linker_a[i][j]);
+            }
+        }
+        
+        
+        System.out.println(" DataDefine.m_buttonPos_a -------------> ");
+        for (int i = 0; i < DataDefine.m_buttonPos_a.length; i++) {
+            System.out.println(" DataDefine.m_buttonPos_a -------> " + i);
+            for (int j = 0; j < DataDefine.m_buttonPos_a[i].length; j++) {
+                if (j == 0){
+                    m_buttonPos_a[i][j] = (int) Math.floor(DataDefine.m_buttonPos_a[i][j] * GameConfig.getWeightsX() + 0.5f);
+                }else if(j == 1){
+                    m_buttonPos_a[i][j] = (int) Math.floor(DataDefine.m_buttonPos_a[i][j] * GameConfig.getWeightsY() + 0.5f);
+                }else{
+                    m_buttonPos_a[i][j] = DataDefine.m_buttonPos_a[i][j];
+                }
+                System.out.println(" -------------> "+m_buttonPos_a[i][j]);
+            }
+        }
     }
 
     @Override
@@ -139,14 +166,14 @@ public class MapView extends SurfaceView implements Callback, Runnable{
     private void drawButton(Canvas canvas, Paint paint, Bitmap bitmap) {
         
         for (int i = 0; i < DataDefine.m_buttonPos_a.length; i++) {
-            drawImage(canvas, paint, bitmap, DataDefine.m_buttonPos_a[i][0], DataDefine.m_buttonPos_a[i][1], DataDefine.BUTTON_WIDTH, DataDefine.BUTTON_HEIGHT);
+            drawImage(canvas, paint, bitmap, m_buttonPos_a[i][0], m_buttonPos_a[i][1], DataDefine.BUTTON_WIDTH, DataDefine.BUTTON_HEIGHT);
         }
     }
     
     private void drawLinker(Canvas canvas, Paint paint, Bitmap bitmap) {
         
         for (int i = 0; i < DataDefine.m_linker_a.length; i++) {
-            drawImage(canvas, paint, bitmap, DataDefine.m_linker_a[i][0], DataDefine.m_linker_a[i][1], DataDefine.BUTTON_WIDTH, DataDefine.BUTTON_HEIGHT);
+            drawImage(canvas, paint, bitmap, m_linker_a[i][0], m_linker_a[i][1], DataDefine.BUTTON_WIDTH, DataDefine.BUTTON_HEIGHT);
         }
     }
     
@@ -175,6 +202,8 @@ public class MapView extends SurfaceView implements Callback, Runnable{
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
         opt.inPurgeable = true;
         opt.inInputShareable = true;
+//        opt.inS
+//        opt.inSampleSize = (int) (GameConfig.getRatio() * 100);
         // 获取资源图片
         InputStream is = context.getResources().openRawResource(resId);
         return BitmapFactory.decodeStream(is, null, opt);
