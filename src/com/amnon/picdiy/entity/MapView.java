@@ -3,13 +3,16 @@ package com.amnon.picdiy.entity;
 import java.io.InputStream;
 
 import com.amnon.picdiy.R;
+import com.amnon.picdiy.data.DataDefine;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.text.BoringLayout.Metrics;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -21,6 +24,9 @@ public class MapView extends SurfaceView implements Callback, Runnable{
     public boolean isExit = false;
     
     Bitmap m_bitmap = null;
+    Bitmap m_btn_bitmap = null;
+    Bitmap m_linker_bitmap = null;
+    
     
     Resources m_resources = null;
     
@@ -40,14 +46,14 @@ public class MapView extends SurfaceView implements Callback, Runnable{
                               {58, 780},
     };
     
-    private int[][] m_buttonPos_a = { 
-                                  {8, 780},
-                                  {73, 780},
-                                  {138, 780},
-                                  {193, 780},
-                                  {258, 780},
-                                  {313, 780},
-    };
+//    private int[][] m_buttonPos_a = { 
+//                                  {8, 780},
+//                                  {73, 780},
+//                                  {138, 780},
+//                                  {193, 780},
+//                                  {258, 780},
+//                                  {313, 780},
+//    };
     
 
     public MapView(Context context, AttributeSet attrs) {
@@ -67,7 +73,8 @@ public class MapView extends SurfaceView implements Callback, Runnable{
         // TODO Auto-generated method stub
         m_screenW = this.getWidth();
         m_screenH = this.getHeight();
-        m_bitmap = ReadBitMap(m_context, R.drawable.button_level02);
+        m_btn_bitmap = ReadBitMap(m_context, R.drawable.button_level02);
+        m_linker_bitmap = ReadBitMap(m_context, R.drawable.button_linker01);
         m_mainThread = new Thread(this);
         m_mainThread.start();
         
@@ -119,8 +126,9 @@ public class MapView extends SurfaceView implements Callback, Runnable{
      *  
      */
     public void draw(){
-        
-        drawMap(m_canvas, m_paint, m_bitmap);
+        drawLinker(m_canvas, m_paint, m_linker_bitmap);
+        drawButton(m_canvas, m_paint, m_btn_bitmap);
+//        drawMap(m_canvas, m_paint, m_btn_bitmap);
         
     }
     
@@ -128,16 +136,28 @@ public class MapView extends SurfaceView implements Callback, Runnable{
     /**
      * 
      */
-    private void drawMap(Canvas canvas, Paint paint, Bitmap bitmap) {
+    private void drawButton(Canvas canvas, Paint paint, Bitmap bitmap) {
         
-        for (int i = 0; i < m_buttonPos_a.length; i++) {
-            drawImage(canvas, paint, bitmap, m_buttonPos_a[i][0], m_buttonPos_a[i][1]);
+        for (int i = 0; i < DataDefine.m_buttonPos_a.length; i++) {
+            drawImage(canvas, paint, bitmap, DataDefine.m_buttonPos_a[i][0], DataDefine.m_buttonPos_a[i][1], DataDefine.BUTTON_WIDTH, DataDefine.BUTTON_HEIGHT);
         }
     }
     
-    private void drawImage(Canvas canvas, Paint paint, Bitmap bitmap, int x, int y) {
+    private void drawLinker(Canvas canvas, Paint paint, Bitmap bitmap) {
+        
+        for (int i = 0; i < DataDefine.m_linker_a.length; i++) {
+            drawImage(canvas, paint, bitmap, DataDefine.m_linker_a[i][0], DataDefine.m_linker_a[i][1], DataDefine.BUTTON_WIDTH, DataDefine.BUTTON_HEIGHT);
+        }
+    }
+    
+    private void drawImage(Canvas canvas, Paint paint, Bitmap bitmap, int x, int y, int width, int height) {
         canvas.save();
-//        canvas.clipRect(x, y, x + src_xp, y + src_yp);
+//        canvas.clipRect(x, y, x, y);
+//        Bitmap afterBitmap = Bitmap.createBitmap(width, height, bitmap.getConfig());
+//        float wDegress = bitmap.getWidth() / w;
+//        float hDegress = bitmap.getHeight() / h;
+//        Matrix matrix = new Matrix();
+//        matrix.setScale(wDegress, hDegress);
         canvas.drawBitmap(bitmap, x, y, paint);
 //        canvas.drawBitmap();
         canvas.restore();
