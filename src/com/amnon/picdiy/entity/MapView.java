@@ -82,6 +82,7 @@ public class MapView extends SurfaceView implements Callback, Runnable{
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         // TODO Auto-generated method stub
+        isExit = true;
         
     }
 
