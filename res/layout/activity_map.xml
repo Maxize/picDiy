@@ -91,8 +91,8 @@
     <com.amnon.picdiy.entity.MapView
         android:id="@+id/sf_map"
         android:layout_width="fill_parent"
-        android:layout_height="600dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="705dp"
+        android:layout_marginTop="55dp"
         />
     <RelativeLayout
         android:id="@+id/bottom_bg"

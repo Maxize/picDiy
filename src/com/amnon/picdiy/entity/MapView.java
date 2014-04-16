@@ -6,6 +6,7 @@ import com.amnon.picdiy.R;
 import com.amnon.picdiy.common.DiyApplication;
 import com.amnon.picdiy.common.GameConfig;
 import com.amnon.picdiy.data.DataDefine;
+import com.amnon.picdiy.util.ImageUtil;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -14,7 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.text.BoringLayout.Metrics;
+import android.media.ThumbnailUtils;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -63,9 +64,9 @@ public class MapView extends SurfaceView implements Callback, Runnable{
 
     private void initData() {
         // TODO Auto-generated method stub
-        System.out.println(" DataDefine.m_linker_a -------------> ");
+//        System.out.println(" DataDefine.m_linker_a -------------> ");
         for (int i = 0; i < DataDefine.m_linker_a.length; i++) {
-            System.out.println(" DataDefine.m_linker_a -------> " + i);
+//            System.out.println(" DataDefine.m_linker_a -------> " + i);
             for (int j = 0; j < DataDefine.m_linker_a[i].length; j++) {
                 if (j == 0){
                     m_linker_a[i][j] = (int) Math.floor(DataDefine.m_linker_a[i][j] * GameConfig.getWeightsX() + 0.5f);
@@ -74,14 +75,14 @@ public class MapView extends SurfaceView implements Callback, Runnable{
                 }else{
                     m_linker_a[i][j] = DataDefine.m_linker_a[i][j];
                 }
-                System.out.println(" -------------> "+m_linker_a[i][j]);
+//                System.out.println(" -------------> "+m_linker_a[i][j]);
             }
         }
         
         
-        System.out.println(" DataDefine.m_buttonPos_a -------------> ");
+//        System.out.println(" DataDefine.m_buttonPos_a -------------> ");
         for (int i = 0; i < DataDefine.m_buttonPos_a.length; i++) {
-            System.out.println(" DataDefine.m_buttonPos_a -------> " + i);
+//            System.out.println(" DataDefine.m_buttonPos_a -------> " + i);
             for (int j = 0; j < DataDefine.m_buttonPos_a[i].length; j++) {
                 if (j == 0){
                     m_buttonPos_a[i][j] = (int) Math.floor(DataDefine.m_buttonPos_a[i][j] * GameConfig.getWeightsX() + 0.5f);
@@ -90,18 +91,20 @@ public class MapView extends SurfaceView implements Callback, Runnable{
                 }else{
                     m_buttonPos_a[i][j] = DataDefine.m_buttonPos_a[i][j];
                 }
-                System.out.println(" -------------> "+m_buttonPos_a[i][j]);
+//                System.out.println(" -------------> "+m_buttonPos_a[i][j]);
             }
         }
+        System.out.println(GameConfig.getRatio() + "===========================         ");
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        // TODO Auto-generated method stub
         m_screenW = this.getWidth();
         m_screenH = this.getHeight();
-        m_btn_bitmap = ReadBitMap(m_context, R.drawable.button_level02);
-        m_linker_bitmap = ReadBitMap(m_context, R.drawable.button_linker01);
+        m_btn_bitmap = ImageUtil.readBitMap(m_context, R.drawable.button_level02);
+//        m_btn_bitmap = ImageUtil.setBitmapWithWH(m_btn_bitmap, (int)Math.floor(m_btn_bitmap.getWidth()*GameConfig.getRatio()+ 0.5f), (int)Math.floor(m_btn_bitmap.getHeight()*GameConfig.getRatio()+ 0.5f));
+        m_linker_bitmap = ImageUtil.readBitMap(m_context, R.drawable.button_linker01);
+//        m_linker_bitmap = ImageUtil.setBitmapWithWH(m_linker_bitmap, (int)Math.floor(m_linker_bitmap.getWidth()*GameConfig.getRatio()+ 0.5f), (int)Math.floor(m_linker_bitmap.getHeight()*GameConfig.getRatio()+ 0.5f));
         m_mainThread = new Thread(this);
         m_mainThread.start();
         
@@ -188,25 +191,6 @@ public class MapView extends SurfaceView implements Callback, Runnable{
         canvas.drawBitmap(bitmap, x, y, paint);
 //        canvas.drawBitmap();
         canvas.restore();
-    }
-    
-    /**
-     * 读取本地资源的图片
-     * 
-     * @param context
-     * @param resId
-     * @return
-     */
-    public Bitmap ReadBitMap(Context context, int resId) {
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inPreferredConfig = Bitmap.Config.RGB_565;
-        opt.inPurgeable = true;
-        opt.inInputShareable = true;
-//        opt.inS
-//        opt.inSampleSize = (int) (GameConfig.getRatio() * 100);
-        // 获取资源图片
-        InputStream is = context.getResources().openRawResource(resId);
-        return BitmapFactory.decodeStream(is, null, opt);
     }
     
     public static int dip2px(float dipValue){ 
