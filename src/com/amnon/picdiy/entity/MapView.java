@@ -17,6 +17,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ThumbnailUtils;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -46,8 +47,11 @@ public class MapView extends SurfaceView implements Callback, Runnable{
     
     private int[][] m_linker_a = new int[100][3];
     
-    private int[][] m_buttonPos_a = new int[100][5];;
+    private int[][] m_buttonPos_a = new int[100][5];
     
+    private float lastX, lastY;
+    private float newX, newY;
+    private float offsetX, offsetY;
 
     public MapView(Context context, AttributeSet attrs) {
         super(context);
@@ -108,6 +112,7 @@ public class MapView extends SurfaceView implements Callback, Runnable{
         m_mainThread = new Thread(this);
         m_mainThread.start();
         
+        setWillNotDraw(false);
     }
 
     @Override
@@ -151,6 +156,75 @@ public class MapView extends SurfaceView implements Callback, Runnable{
         }
     }
     
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+//        lastX = event.getX();
+//        lastY = event.getY();
+//        newX = event.getX();
+//        newY = event.getY();
+//        offsetX = newX - lastX;
+//        offsetY = newY - lastY;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                lastX = event.getX();
+                lastY = event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                newX = event.getX();
+                newY = event.getY();
+                offsetX = newX - lastX;
+                offsetY = newY - lastY;
+                changeArray(offsetX, offsetY); 
+                postInvalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                newX = event.getX();
+                newY = event.getY();
+                offsetX = newX - lastX;
+                offsetY = newY - lastY;
+                changeArray(offsetX, offsetY);
+                break;
+            default:
+                break;
+        }
+        // 重刷界面
+        postInvalidate();
+        return true;
+    }
+    
+    private int changeArray(float x, float y) {
+        for (int i = 0; i < DataDefine.m_linker_a.length; i++) {
+//          System.out.println(" DataDefine.m_linker_a -------> " + i);
+          for (int j = 0; j < DataDefine.m_linker_a[i].length; j++) {
+              if (j == 0){
+                  m_linker_a[i][j] = (int) (Math.floor(DataDefine.m_linker_a[i][j] * GameConfig.getWeightsX() + 0.5f) + x);
+              }else if(j == 1){
+                  m_linker_a[i][j] = (int) (Math.floor(DataDefine.m_linker_a[i][j] * GameConfig.getWeightsY() + 0.5f) + y);
+              }else{
+                  m_linker_a[i][j] = DataDefine.m_linker_a[i][j];
+              }
+//              System.out.println(" -------------> "+m_linker_a[i][j]);
+          }
+      }
+      
+      
+//      System.out.println(" DataDefine.m_buttonPos_a -------------> ");
+      for (int i = 0; i < DataDefine.m_buttonPos_a.length; i++) {
+//          System.out.println(" DataDefine.m_buttonPos_a -------> " + i);
+          for (int j = 0; j < DataDefine.m_buttonPos_a[i].length; j++) {
+              if (j == 0){
+                  m_buttonPos_a[i][j] = (int) (Math.floor(DataDefine.m_buttonPos_a[i][j] * GameConfig.getWeightsX() + 0.5f) + x);
+              }else if(j == 1){
+                  m_buttonPos_a[i][j] = (int) (Math.floor(DataDefine.m_buttonPos_a[i][j] * GameConfig.getWeightsY() + 0.5f) + y);
+              }else{
+                  m_buttonPos_a[i][j] = DataDefine.m_buttonPos_a[i][j];
+              }
+//              System.out.println(" -------------> "+m_buttonPos_a[i][j]);
+          }
+      }
+        return 1;
+    }
     
     /**
      *  
