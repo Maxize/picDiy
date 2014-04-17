@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ThumbnailUtils;
@@ -52,6 +53,11 @@ public class MapView extends SurfaceView implements Callback, Runnable{
     private float lastX, lastY;
     private float newX, newY;
     private float offsetX, offsetY;
+    
+    // 休息时间
+    private final int TIME = 50;
+    
+    private byte[] lock = new byte[0];
 
     public MapView(Context context, AttributeSet attrs) {
         super(context);
@@ -138,6 +144,7 @@ public class MapView extends SurfaceView implements Callback, Runnable{
                 prevTime = System.currentTimeMillis();
                 synchronized (m_sfh) {
                     m_canvas = m_sfh.lockCanvas();
+                    m_canvas.drawColor(Color.BLACK);
                     draw();
                     /** 绘制结束后解锁显示在屏幕上 **/
                     m_sfh.unlockCanvasAndPost(m_canvas);
@@ -176,7 +183,7 @@ public class MapView extends SurfaceView implements Callback, Runnable{
                 offsetX = newX - lastX;
                 offsetY = newY - lastY;
                 changeArray(offsetX, offsetY); 
-                postInvalidate();
+//                postInvalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 newX = event.getX();
@@ -189,7 +196,14 @@ public class MapView extends SurfaceView implements Callback, Runnable{
                 break;
         }
         // 重刷界面
-        postInvalidate();
+//        postInvalidate();
+        synchronized (lock) {//备注2  
+            try {  
+                lock.wait(TIME);  
+            } catch (InterruptedException e) {  
+                e.printStackTrace();  
+            }  
+        }  
         return true;
     }
     
